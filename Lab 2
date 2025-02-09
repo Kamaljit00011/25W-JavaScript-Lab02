@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Lab 2 | COMP1073 Client-Side JavaScript</title>
+    <style>
+        /* Basic styling for the page */
+        html {
+            font-family: sans-serif;
+            font-size: 200%;  /* Set a large font size for easier readability */
+            background-color: rgb(0, 0, 0);  /* Initial background color set to black */
+            color: rgb(255, 255, 255);  /* Text color set to white */
+            transition-property: background-color;  /* Smooth transition for background color changes */
+            transition-duration: 0.25s;  /* Duration of the color transition */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Lab 2</h1>
+    <p>
+        This script will enable the user to adjust the below range input
+        elements to modify the
+        <abbr title="Red, Green, Blue">RGB</abbr> values of the
+        <code>background-color</code> CSS property of the HTML element.
+    </p>
+
+    <!-- Sliders to adjust the Red, Green, and Blue channels -->
+    <label for="red">Red</label>
+    <input id="red" type="range" min="0" max="255" value="0" /> <!-- Red channel slider -->
+    
+    <label for="green">Green</label>
+    <input id="green" type="range" min="0" max="255" value="0" /> <!-- Green channel slider -->
+    
+    <label for="blue">Blue</label>
+    <input id="blue" type="range" min="0" max="255" value="0" /> <!-- Blue channel slider -->
+
+    <script>
+        /* Declare and initialize global variables */
+        var pageBg = document.querySelector("html");  // Reference to the HTML element for background color change
+        var sliders = document.getElementsByTagName("input");  // Get all input range sliders
+        var rgb = [0, 0, 0];  // Array to store the RGB values (initialized to 0,0,0)
+
+        /* Event handlers for range sliders */
+        for (var i = 0; i < sliders.length; i++) {
+            sliders[i].onchange = function () {
+                var whichSlider = this.getAttribute("id");  // Get the id of the slider (red, green, or blue)
+                var sliderValue = this.value;  // Get the current value of the slider
+                
+                newRgb = changeRgb(whichSlider, sliderValue);  // Call changeRgb function to update the RGB array
+                var newCSS = writeCSS(newRgb);  // Generate the CSS color string (rgb())
+                pageBg.style.backgroundColor = newCSS;  // Apply the new background color to the page
+            };
+        }
+
+        /* Function to update the RGB values */
+        function changeRgb(channel, value) {
+            switch (channel) {
+                case "red":  // If the red slider is moved
+                    rgb[0] = value;  // Update the red value in the RGB array
+                    break;
+                case "green":  // If the green slider is moved
+                    rgb[1] = value;  // Update the green value in the RGB array
+                    break;
+                case "blue":  // If the blue slider is moved
+                    rgb[2] = value;  // Update the blue value in the RGB array
+                    break;
+            }
+            return rgb;  // Return the updated RGB array
+        }
+
+        /* Function to build the CSS rgb() string */
+        function writeCSS(newRgb) {
+            var newColor = "rgb(";  // Start the CSS string for the color
+            var i = 0;
+            while (i < newRgb.length) {  // Loop through the RGB array
+                newColor += newRgb[i];  // Add each RGB value to the string
+                if (i < newRgb.length - 1) {
+                    newColor += ",";  // Add a comma between the RGB values, except for the last one
+                }
+                i++;  // Move to the next element in the array
+            }
+            newColor += ")";  // Close the rgb() function with a closing parenthesis
+            return newColor;  // Return the complete CSS color string
+        }
+    </script>
+</body>
+
+</html>
